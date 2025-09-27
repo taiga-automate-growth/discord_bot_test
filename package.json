@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "ts-node src/app/index.ts"
+    "build": "echo 'Build step skipped'",
+    "start": "ts-node src/app/index.ts"
   },
   "dependencies": {
     "discord.js": "^14.22.1",
