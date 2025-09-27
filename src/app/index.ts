@@ -1,3 +1,13 @@
+import { appendFileSync } from "fs";
+
+function log(message: string) {
+  const timestamp = new Date().toISOString();
+  appendFileSync("bot.log", `[${timestamp}] ${message}\n`);
+}
+
+// BOT 起動時にログ
+log("BOT プロセス起動");
+
 // bot/index.ts
 import { Client, GatewayIntentBits } from "discord.js";
 
