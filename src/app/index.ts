@@ -33,8 +33,16 @@ client.once("ready", () => {
 });
 
 // メッセージを受け取ったとき
-client.on("messageCreate", (message) => {
+client.on("messageCreate", async (message) => {
   console.log(`💬 [${message.channelId}] ${message.author.tag}: ${message.content}`);
+  const gasUrl = process.env.GAS_URL;
+  console.log("gasUrl", gasUrl);
+  if (gasUrl) {
+    console.log("fetching gasUrl");
+    await fetch(gasUrl, {
+      method: "POST", body: JSON.stringify(message),
+    });
+  }
 });
 
 // Discord にログイン
