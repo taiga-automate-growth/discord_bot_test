@@ -3,11 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "bot": "ts-node src/app/index.ts"
+    "build": "ts-node src/app/index.ts"
   },
   "dependencies": {
     "discord.js": "^14.22.1",
