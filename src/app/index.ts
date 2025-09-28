@@ -34,15 +34,36 @@ client.once("ready", () => {
 
 // メッセージを受け取ったとき
 client.on("messageCreate", async (message) => {
-  console.log(`💬 [${message.channelId}] ${message.author.tag}: ${message.content}`);
-  const gasUrl = process.env.GAS_URL;
-  console.log("gasUrl", gasUrl);
-  if (gasUrl) {
-    console.log("fetching gasUrl");
-    await fetch(gasUrl, {
-      method: "POST", body: JSON.stringify(message),
-    });
-  }
+  const gasUrl = process.env.GAS_URL || "";
+  // 添付ファイルを扱いやすい形に変換
+  const attachments = Array.from(message.attachments.values()).map(att => ({
+    id: att.id,
+    url: att.url,
+    proxyURL: att.proxyURL,
+    contentType: att.contentType,
+    name: att.name,
+    size: att.size,
+    width: att.width,
+    height: att.height,
+  }));
+
+  // 転送用のシリアライズ可能なオブジェクト
+  const payload = {
+    id: message.id,
+    channelId: message.channelId,
+    guildId: message.guildId,
+    authorId: message.author.id,
+    authorTag: message.author.tag,
+    content: message.content,
+    createdTimestamp: message.createdTimestamp,
+    attachments, // ←これでGAS側にURL付きで届く
+  };
+
+  await fetch(gasUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 });
 
 // Discord にログイン
